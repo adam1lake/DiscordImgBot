@@ -16,8 +16,8 @@ Ensure that your bot has the correct permissions in your server/channel, and run
 Using the bot:
 The commands:
 - $image querystring
-  Returns the first result from Google Images
+   - Returns the first result from Google Images
 - $random querystring
-  Returns a random result from the first 50 results from Google Images
+   - Returns a random result from the first 50 results from Google Images
   
 
