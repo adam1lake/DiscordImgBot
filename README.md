@@ -13,8 +13,7 @@ In the .env file:
 3. Choose your command prefix. The default is "$".
 Ensure that your bot has the correct permissions in your server/channel, and run main.py
 
-Using the bot:
-The commands:
+The commands (using the prefix you specify in .env instead of "$"):
 - $image querystring
    - Returns the first result from Google Images
 - $random querystring
