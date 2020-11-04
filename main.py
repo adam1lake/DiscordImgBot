@@ -8,11 +8,11 @@ from dotenv import load_dotenv
 
 class IpDiscordBot:
     # Initialises the Discord API and the imagegetter
-    def __init__(self, token):
+    def __init__(self, token, prefix):
         self.token = token
         self.client = discord.Client()
         # Command prefix can be changed here
-        self.client = commands.Bot(command_prefix="$")
+        self.client = commands.Bot(command_prefix=prefix)
         self.ig = ImageGetter()
 
     def start(self):
@@ -76,8 +76,9 @@ if __name__ == "__main__":
         # Gets values from .env
         load_dotenv()
         TOKEN = os.getenv("DISCORD_BOT_TOKEN")
+        PREFIX = os.getenv("DISCORD_COMMAND_PREFIX")
 
-        bot = IpDiscordBot(TOKEN)
+        bot = IpDiscordBot(TOKEN, PREFIX)
         bot.start()
     except KeyboardInterrupt:
         print("Exiting...")
