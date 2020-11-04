@@ -12,12 +12,11 @@ class ImageGetter:
         # Comment out the line below to disable headless Chrome for debugging
         options.add_argument("--headless")
         self.driver = webdriver.Chrome(chrome_options=options)
-        self.driver.implicitly_wait(5)
+        self.driver.implicitly_wait(2)
 
     # Get image using query string. By default, random is off and the first result is returned
     def get_image(self, query, random=False):
         self.driver.get(f"https://www.google.com/search?tbm=isch&q={query}")
-
         # Sets the index of the image on the page
         if random:
             result_id = randint(1, 50)
@@ -25,16 +24,22 @@ class ImageGetter:
             result_id = 1
 
         # JavaScript code to get the image using the index and click on it
-        self.driver.execute_script(f"""
-        let element = document.evaluate('(//div[@id="islmp"]//img)[{result_id}]', document, XPathResult.singleNodeValue).iterateNext();
-        element.click();
-        """)
+        self.driver.execute_script("""
+        try {
+            let element = document.evaluate('(//div[@id="islmp"]//img)[%s]', document, XPathResult.singleNodeValue).iterateNext();
+            element.click();
+        } catch {
+            console.log("Failed to click on element.");
+        } 
+        """ % result_id)
 
         # TODO: get a higher resolution image, as the current source gives an image of relatively low resolution
         # Finds multiple images
         elements = self.driver.find_elements_by_xpath(
             "(//img[@class='n3VNCb' and @jsname='HiaYvf' and 'load:XAeZkd;'])")
+
         url = ""
+        print(len(elements))
         # Selects the correct image that has the desired source
         if len(elements) == 0:
             # This occurs when no results are found for the search query
@@ -53,3 +58,4 @@ class ImageGetter:
         with open("current_image.png", "wb") as f:
             shutil.copyfileobj(img, f)
             print("Image saved.")
+            return True

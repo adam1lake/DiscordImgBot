@@ -37,23 +37,28 @@ class IpDiscordBot:
                 await ctx.send("Error: No parameters given.")
             print(f"Searching for first image with query: {query}...")
             result = self.ig.get_image(query)
-            if result == "NoResults":
+            if result:
+                await ctx.send(file=discord.File("current_image.png"))
+            elif result == "NoResults":
                 await ctx.send("Error: Unexpected result.")
             elif result == "Error":
                 await ctx.send("Internal Error.")
-            await ctx.send(file=discord.File("current_image.png"))
 
         # Gets a random image, sends the image or an error message
         @self.client.command()
         async def random(ctx, *args):
             query = " ".join(args[:])
+            if query == "":
+                await ctx.send("Error: No parameters given.")
             print(f"Searching for random image with query: {query}...")
             result = self.ig.get_image(query, True)
+
             if result == "NoResults":
                 await ctx.send("Error: No results found.")
             elif result == "Error":
                 await ctx.send("Error: Complain at chub because this shouldn't happen.")
-            await ctx.send(file=discord.File("current_image.png"))
+            else:
+                await ctx.send(file=discord.File("current_image.png"))
 
         # Handles errors with the image command
         @image.error
