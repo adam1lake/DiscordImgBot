@@ -1,3 +1,0 @@
-discord==2.0.0
-python-dotenv==0.21.0
-selenium==4.4.3
